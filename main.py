@@ -1,4 +1,3 @@
-import cvzone
 import pyautogui
 import cv2
 from cvzone.FaceMeshModule import FaceMeshDetector
