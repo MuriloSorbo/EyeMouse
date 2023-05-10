@@ -1,9 +1,14 @@
 import pyautogui
 import cv2
+import json
 from cvzone.FaceMeshModule import FaceMeshDetector
 
 cap = cv2.VideoCapture(0)
 detector = FaceMeshDetector(maxFaces=1)
+
+def getData():
+    with open("calInfo.json", "r") as file:
+        return json.load(file)
 
 def calculateToScreen(point, minX, maxX, minY, maxY):
     width = 1366
@@ -15,6 +20,8 @@ def clicked(mouthUp, mouthDown):
     return abs(mouthUp[1] - mouthDown[1]) > 5
 
 def Run():
+    data = getData()
+
     nose = 5
     mouthUp = 13
     mouthDown = 14
@@ -36,7 +43,7 @@ def Run():
         if faces:
             face = faces[0]
 
-            x, y = calculateToScreen(face[nose], 100, 500, 200, 350)
+            x, y = calculateToScreen(face[nose], data['minX'], data['maxX'], data['minY'], data['maxY'])
             click = clicked(face[mouthUp], face[mouthDown])
 
             if (abs(lastX - x) > 10 or abs(lastY - y) > 10):
